@@ -1,25 +1,40 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, ManyToOne } from "typeorm"
-import { Employees } from "./employees"
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, OneToOne, JoinColumn } from "typeorm"
+import { Employees } from "./employees";
+
+
+export enum BookStatus {
+    NONE = "",
+    SELECT = "SELECTED",
+    BOOK = "BOOKED",
+}
 
 @Entity({
     name:'seats'
 })
 export class Seats extends BaseEntity {
     @PrimaryGeneratedColumn()
-    seat_id: number
+    seat_no: number
 
     @Column({
-        type:'varchar',
+        type:'int',
         nullable:false
     })
-    seat_no: string
+    floor_no: number
 
     @Column({
-        type:'date',
-        nullable:false,
+        type:'enum',
+        enum:BookStatus,
+        default:BookStatus.NONE,
+        name:'book_status'
     })
-    date: string
+    book_status: BookStatus
 
-    @ManyToOne(() => Employees, (employee) => employee.emp_id)
-    booked_by: Employees
+
+    @OneToOne(() => Employees,{nullable:true,eager:true})
+    @JoinColumn(
+        {
+            name:'emp_id',
+        }
+    )
+    employee: Employees | null
 }

@@ -1,7 +1,5 @@
 import { DataSource } from "typeorm";
-import { Employees } from "./entitites/employees";
-import { Seats } from "./entitites/seats";
-import { Meets } from "./entitites/meets";
+import path from "path";
 
 export const db = new DataSource({
     type: "postgres",
@@ -9,8 +7,11 @@ export const db = new DataSource({
     port: 5432,
     username: "postgres",
     password: "root",
-    database: "seat-db",
-    entities:[Employees,Seats,Meets],
+    database: "seat_db",
+    entities:[path.resolve('src','lib','entitites')+'/*.ts'],
     synchronize:true,
     logger:'simple-console',
+    //logging:true,
 })
+
+

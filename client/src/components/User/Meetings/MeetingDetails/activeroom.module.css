@@ -1,0 +1,26 @@
+.container{
+    width: 100%;
+    padding: 1rem;
+    border: 1px solid black;
+    border-radius: 12px;
+}
+
+.header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.status{
+    color: white;
+    
+    padding: 0.3rem;
+    border-radius: 4px;
+}
+.busy{
+    background-color: rgb(247, 78, 78);
+}
+
+.free{
+    background-color: rgb(123, 247, 123);
+}

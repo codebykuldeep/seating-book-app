@@ -1,0 +1,31 @@
+.container{
+    padding: 1rem;
+}
+
+.header{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+}
+.option{
+    display: flex;
+    gap: 15px;
+}
+.option div button{
+    all: unset;
+    cursor: pointer;
+    border: 1px solid black;
+    border-bottom: 5px solid white;
+    padding: 1rem;
+}
+
+
+    
+.content{
+    border: 1px solid black;
+}
+
+.date_picker{
+    align-self: flex-start;
+}

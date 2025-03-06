@@ -1,0 +1,25 @@
+.header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+}
+
+.reserve_btn{
+    text-align: right;
+}
+
+.input{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.input label{
+    cursor: pointer;
+}
+.input input{
+    width: 120px;
+    height: 35px;
+    font-size: 18px;
+    cursor: pointer;
+}

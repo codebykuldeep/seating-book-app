@@ -10,6 +10,9 @@ import { db } from "./lib/db";
 
 //ROUTER IMPORT
 import commonRouter from './routes/common'
+import { createServer } from "node:http";
+import { Server } from "socket.io";
+import connectSocketIo from "./socket/connectSocket";
 
 
 dotenv.config();
@@ -44,10 +47,23 @@ app.get("*", (req, res) => {
 
 app.use(errorMiddleware);
 
-app.listen(port, () =>{
+
+const server = createServer(app);
+
+export const io = new Server(server,{
+    cors: {
+        origin: "*",
+        methods: ["GET", "POST"],
+      },
+});
+
+
+
+server.listen(port, () =>{
   console.log("Server is working on Port:" + port + " in " + envMode + " Mode.");
   db.initialize().then(()=>{
     console.log('DB CONNECTED')
+    io.on('connection',connectSocketIo)
   })
   .catch((error)=>{
     throw new Error(error);
