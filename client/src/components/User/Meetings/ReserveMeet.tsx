@@ -3,9 +3,12 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { Button, FormHelperText, Stack } from '@mui/material';
-import { validMeetingTime } from '../../../utils/validation';
+import { validateDate, validMeetingTime } from '../../../utils/validation';
 import { socket } from '../../Layout/HomeLayout';
 import classes from './meetings.module.css'
+import DateSelector from '../../UI/common/DateSelector';
+
+const curr_date = new Date().toISOString().split('T')[0];
 
 const style = {
   position: 'absolute',
@@ -26,7 +29,7 @@ interface Response{
 interface Props{
     open:boolean;
     handleClose:()=>void;
-    handleBookMeet:(start:string,end:string)=>void;
+    handleBookMeet:(start:string,end:string,date:string)=>void;
     handleBookSuccess:(message:string)=>void;
 }
 
@@ -35,7 +38,7 @@ export default function ReserveModal({open,handleClose,handleBookMeet,handleBook
     const [endTime,setEndTime] =useState('');
     const [error,setError] = useState({error:false,message:''});
     const [response,setResponse] = useState<Response | undefined>()
-    
+    const [date,setDate] = useState(curr_date);
   
     useEffect(()=>{
       socket.on(`confirm-meet`,(data)=>{
@@ -54,7 +57,7 @@ export default function ReserveModal({open,handleClose,handleBookMeet,handleBook
     function handleSubmit(){
         if(error.error) return;
         if(!startTime || !endTime) return;
-        handleBookMeet(startTime,endTime);
+        handleBookMeet(startTime,endTime,date);
     }
 
     function handleTime(event:React.ChangeEvent<HTMLInputElement>){
@@ -72,6 +75,12 @@ export default function ReserveModal({open,handleClose,handleBookMeet,handleBook
         }
         
     }
+
+    function handleDate(value:string){
+      if(validateDate(value,'past')){
+        setDate(value);
+      }
+    }
   
   return (
     <div>
@@ -85,7 +94,11 @@ export default function ReserveModal({open,handleClose,handleBookMeet,handleBook
           <Typography id="modal-modal-title" variant="h6" component="h2" textAlign={'center'}>
             Confirm your meeting time
           </Typography>
-          <Stack direction={'row'} justifyContent={'center'} gap={3} p={3}>
+          <Box className={classes.date_picker}>
+            <div>Date : </div>
+            <DateSelector date={date} updateDate={handleDate}/>
+          </Box>
+          <Stack direction={'row'}  gap={3} p={3}>
             <Box className={classes.input}>
                 <label htmlFor="start">Start Time</label>
                 <input id='start' type='time' value={startTime}  onChange={handleTime}/>

@@ -116,3 +116,20 @@ export function validMeetingTime(start:string,end:string){
 }
 
 
+export function validateDate(date:string,avoid:"past" | "future"):boolean{
+    const curr_date = new Date().toISOString().split('T')[0];
+    if(avoid === 'past'){
+        if(new Date(date).getTime()<new Date(curr_date).getTime()){
+            return false //invalid
+        }
+        else return true;
+    }
+    else{
+        if(new Date(date).getTime()>new Date(curr_date).getTime()){
+            return false //invalid
+        }
+        else return true;
+    }
+}
+
+

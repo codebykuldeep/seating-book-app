@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, ManyToOne } from "typeorm"
 import { Employees } from "./employees"
+import { BookStatus } from "./seats"
 
 @Entity({
     name:'seats_log'
@@ -19,6 +20,14 @@ export class SeatsLog extends BaseEntity {
         nullable:false,
     })
     date: string
+
+    @Column({
+        type:'enum',
+        enum:BookStatus,
+        default:BookStatus.NONE,
+        name:'book_status'
+    })
+    book_status: BookStatus
 
     @ManyToOne(() => Employees, (employee) => employee.emp_id,{eager:true})
     booked_by: Employees

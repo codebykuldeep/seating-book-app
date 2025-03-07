@@ -1,12 +1,33 @@
 import { Employees } from "../lib/entitites/employees";
 import { MeetsLog } from "../lib/entitites/meetLog";
 
-export async function getAllMeetings(floor_no:string,meet_no:string){
+
+export async function getMeetingHistory(employee:Employees,date:string) {
     try {
-        console.log(floor_no," ",meet_no);
         
         const data = await MeetsLog.find({
             where:{
+                booked_by:employee,
+                date:date
+            },
+            order:{
+                start_time:"DESC"
+            }
+        });
+        return data;
+    } catch (error) {
+        console.log(error);
+        return [];
+    }
+}
+
+export async function getAllMeetings(floor_no:string,meet_no:string){
+    try {
+        console.log(floor_no," ",meet_no);
+        const date  = new Date().toISOString().split('T')[0];
+        const data = await MeetsLog.find({
+            where:{
+                date:date,
                 floor_no:Number(floor_no),
                 meet_no:Number(meet_no)
             },
@@ -21,27 +42,26 @@ export async function getAllMeetings(floor_no:string,meet_no:string){
     }
 }
 
-export async function bookMeeting(employee:Employees,start:string,end:string,floor_no:string,meet_no:string){
+export async function bookMeeting(employee:Employees,start:string,end:string,floor_no:string,meet_no:string,date:string){
     
-    const curr_date = new Date();
     const result = await MeetsLog.find({
         where:{
             floor_no:Number(floor_no),
             meet_no:Number(meet_no),
-            date:curr_date.toISOString().split('T')[0],
+            date:date,
         },
         order:{
             start_time:"ASC"
         }
     });
-    if(checkMeetPossible(result,start,end)){
+    if(checkMeetPossible(result,start,end,date)){
         const newMeet = new MeetsLog();
         newMeet.start_time = start;
         newMeet.end_time = end;
         newMeet.booked_by = employee;
         newMeet.floor_no = Number(floor_no);
         newMeet.meet_no = Number(meet_no);
-        newMeet.date = new Date().toISOString().split('T')[0];
+        newMeet.date = date;
         await newMeet.save();
     }
     else{
@@ -52,8 +72,8 @@ export async function bookMeeting(employee:Employees,start:string,end:string,flo
         
 }
 
-function checkMeetPossible(allMeetList:MeetsLog[],start:string,end:string){
-    const curr_date = new Date();
+function checkMeetPossible(allMeetList:MeetsLog[],start:string,end:string,date:string){
+    const curr_date = new Date(date);
     const [year,month,day]=[curr_date.getFullYear(),curr_date.getMonth(),curr_date.getDay()];
     const meetArr:[number,number][]= [];
     allMeetList.forEach((meet)=>{
