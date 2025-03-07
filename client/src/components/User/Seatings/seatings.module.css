@@ -13,3 +13,9 @@
     justify-content: space-between;
     padding: 1rem 2rem 0 2rem;
 }
+
+.btn_box{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}

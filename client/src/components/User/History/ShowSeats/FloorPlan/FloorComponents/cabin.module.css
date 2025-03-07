@@ -1,0 +1,44 @@
+/* UPPER CABINS */
+.cabin{
+    width: 200px;
+    height: 200px;
+    border: 2px solid black;
+    padding: 0.5rem;
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.cabin_label{
+    position: absolute;
+    top: 0;
+    left: 5%;
+    pointer-events: none;
+    user-select: none;
+}
+.cabin_open{
+    position: absolute;
+    bottom: -15px;
+    left: 25%;
+    background-color: white;
+    width: 80px;
+    height: 20px;
+}
+
+
+.content{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+.table{
+    font-size: 9px;
+    text-align: center;
+    width: 70px;
+    height: 30px;
+    border: 1px solid black;
+    border-radius: 12px;
+}

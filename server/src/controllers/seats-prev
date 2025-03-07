@@ -1,0 +1,103 @@
+import { db } from "../lib/db";
+import { Employees } from "../lib/entitites/employees";
+import { SeatsLog } from "../lib/entitites/seatLog";
+import { BookStatus, Seats } from "../lib/entitites/seats";
+
+
+const curr_date = new Date().toISOString().split('T')[0];
+
+export async function getSeatData(){
+    
+    try {
+        const seats = await Seats.find({
+            where:{
+                floor_no:1,
+            },
+            order:{
+                seat_no:"ASC",
+            }
+        })
+       const seatsLog = await SeatsLog.find({
+        where:{
+            date:curr_date
+        }
+       }) 
+       console.log(seatsLog);
+       
+       const seatsSize = seats.length;
+    
+       for(let i = 0;i<seatsSize;i++){
+            seats[i].book_status=BookStatus.NONE;
+            seats[i].employee = null;
+    
+            const match = seatsLog.find((log)=>Number(log.seat_no) === Number(seats[i].seat_no));
+            if(match){
+                seats[i].book_status = BookStatus.BOOK;
+                seats[i].employee = match.booked_by;
+            }
+       }
+       
+        return seats;
+    } catch (error) {
+        console.log(error);
+        return [];
+    }
+}
+
+
+export async function selectedSeat(seat_no:string,employee:Employees){
+    //const employee = await Employees.findOne({where:{emp_id:Number(emp_id)}})
+    //console.log(employee);
+    
+    const bookedSeat = await SeatsLog.findOne({
+        where:[
+            {
+                date:curr_date,
+                booked_by:employee!,
+                book_status:BookStatus.SELECT
+            },
+            {
+                date:curr_date,
+                booked_by:employee!,
+                book_status:BookStatus.BOOK
+            }
+        ]
+    });
+    //console.log(bookedSeat);
+
+    if(!bookedSeat){
+        const seatData = await Seats.update(seat_no,{
+            book_status:BookStatus.SELECT,
+            employee:employee!
+        });
+        return seatData
+    }
+    
+}
+
+
+export async function unselectSeat(employee:Employees){
+    await db.createQueryBuilder().update(Seats).set({employee:null,book_status:BookStatus.NONE}).where("emp_id = :id", { id: employee?.emp_id }).execute();
+}
+
+export async function releaseSelectedSeat(employee:Employees){
+    const {emp_id} = employee;
+    const bookedSeat = await Seats.findOne({where:{employee:employee!,book_status:BookStatus.BOOK}});
+    if(!bookedSeat){
+        await db.createQueryBuilder().update(Seats).set({employee:null,book_status:BookStatus.NONE}).where("emp_id = :id", { id:emp_id }).execute();
+    }
+    
+}
+
+export async function bookSeat(employee:Employees) {
+    await db.createQueryBuilder().update(Seats).set({book_status:BookStatus.BOOK}).where("emp_id = :id", { id: employee?.emp_id }).execute();
+    const seatData = await Seats.findOne({where:{employee}});
+    if(!seatData) return; 
+
+    const seatLog = new SeatsLog();
+    const curr_date = new Date().toISOString().split('T')[0];
+    seatLog.seat_no = seatData.seat_no;
+    seatLog.booked_by = employee;
+    seatLog.date = curr_date;
+    await seatLog.save();
+}

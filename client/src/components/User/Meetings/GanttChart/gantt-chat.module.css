@@ -1,0 +1,21 @@
+.gantt_container {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+
+  .img{
+    width: 300px;
+    text-align: center;
+    margin: auto;
+  }
+
+  .img img{
+    width: 100%;
+  }
+
+  .text{
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+  

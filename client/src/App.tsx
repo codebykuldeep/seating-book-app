@@ -36,6 +36,7 @@ const router = createBrowserRouter([
           },
           {
             path:'history',
+            errorElement:<h1>Error Occurred while showing history</h1>,
             element:<History/>
           }
         ]
