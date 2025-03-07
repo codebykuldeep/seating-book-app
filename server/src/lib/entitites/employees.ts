@@ -18,9 +18,10 @@ export class Employees extends BaseEntity {
     })
     email: string
 
-    @Column({
-        type:'varchar',
-        nullable:true,
-    })
-    password: string
+    // @Column({
+    //     type:'varchar',
+    //     nullable:true,
+    // })
+    // password: string
+
 }

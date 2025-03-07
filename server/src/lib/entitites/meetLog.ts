@@ -2,17 +2,24 @@ import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, ManyToOne } from "t
 import { Employees } from "./employees"
 
 @Entity({
-    name:'meets'
+    name:'meets_log'
 })
-export class Meets extends BaseEntity {
+export class MeetsLog extends BaseEntity {
     @PrimaryGeneratedColumn()
     meet_id: number
 
     @Column({
-        type:'varchar',
+        type:'int',
         nullable:false
     })
-    meet_no: string
+    meet_no: number;
+
+
+    @Column({
+        type:'int',
+        nullable:false
+    })
+    floor_no: number;
 
     @Column({
         type:'date',
@@ -34,6 +41,6 @@ export class Meets extends BaseEntity {
     })
     end_time: string
 
-    @ManyToOne(() => Employees, (employee) => employee.emp_id)
+    @ManyToOne(() => Employees, (employee) => employee.emp_id,{eager:true})
     booked_by: Employees
 }
