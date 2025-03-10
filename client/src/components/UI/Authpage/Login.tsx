@@ -41,11 +41,17 @@ function Login({nextStep,email,handleChange}:Props) {
         }
         setSubmit(false);
     }
+
+    function handleEmailChange(event:React.ChangeEvent<HTMLInputElement>){
+        if(error.isError){
+            setError({isError:false,message:''});
+        }
+        handleChange(event);
+    }
   return (
     <form onSubmit={handleSubmit} className={classes.form}>
     
     <Box>
-    {/* <FormLabel htmlFor={'email'} error={error.isError}>{"Email"}</FormLabel> */}
       <TextField
           fullWidth
           placeholder={"Enter your company email"}
@@ -57,7 +63,7 @@ function Login({nextStep,email,handleChange}:Props) {
           defaultValue={email}
           error={error.isError}
           helperText={error.message}
-          onChange={handleChange}
+          onChange={handleEmailChange}
         />
     </Box>
     {
