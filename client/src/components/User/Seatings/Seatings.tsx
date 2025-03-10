@@ -16,6 +16,7 @@ import RemoveSeat from './RemoveSeatBook/RemoveSeat';
 import { dateFormatter } from '../../../utils/dateUtils';
 import ShowSnackbar from '../../UI/common/ShowSnackBar';
 import useSnack from '../../../helper/useSnack';
+import Loading from '../../UI/common/Loading';
 
 const curr_date = new Date().toISOString().split('T')[0];
 
@@ -125,10 +126,15 @@ function Seatings() {
           </Box>
           </Box>
         </Box>
-        <div className={classes.container}>
-            <SeatColor/>
-            {seats && <FloorPlan data={seats!}/>}
-        </div>
+        {
+          seats && (
+            <div className={classes.container}>
+              <SeatColor/>
+              <FloorPlan data={seats!}/>
+            </div>
+          )
+        }
+        {!seats && <Loading/>}
      </Box>
      {open && <ConfirmModal open={open} handleClose={handleClose} handleConfirm={handleConfirm}/>}
      <ShowSnackbar state={snackState} closeFn={snackClose}/>

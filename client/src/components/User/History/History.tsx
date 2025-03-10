@@ -11,13 +11,15 @@ import SeatingHistory from './ShowSeats/SeatingHistory';
 import { validateDate } from '../../../utils/validation';
 import ShowSnackbar from '../../UI/common/ShowSnackBar';
 import useSnack from '../../../helper/useSnack';
+import Loading from '../../UI/common/Loading';
 
 function History() {
     const {emp_id} = useSelector((state:RootState)=>state.userSlice.user)!;
     const {snackState,snackClose,snackOpen} = useSnack();
     const [date,setDate] = useState(new Date().toISOString().split('T')[0]);
     const [option,setOption] = useState('seating');
-    const [data,setData] = useState<IMeet[] | ISeat[]>([]);
+    const [data,setData] = useState<IMeet[] | ISeat[]>();
+
 
     useEffect(()=>{
         socket.emit('get-history',{option,date,emp_id})
@@ -69,6 +71,7 @@ function History() {
             </Box>
         </Stack>
         <Box className={classes.content}>
+            {!data && <Loading/>}
             {option === 'meeting' && data && <MeetingHistory meetingsData={data as IMeet[]} date={date}/>}
             {option === 'seating' && data && <SeatingHistory data={data as ISeat[]}/>}
         </Box>
