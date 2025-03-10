@@ -13,3 +13,12 @@ export function resolveTimeToDateNow(meet:IMeet):[number,number]{
 
     return [startTimeSec,endTimeSec];
 }
+
+
+export function dateFormatter(value:string){
+    return new Date(value).toLocaleDateString('en-US',{
+        month:'long',
+        day:"2-digit",
+        year:'numeric'
+    })
+}

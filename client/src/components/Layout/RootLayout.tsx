@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../store/store';
 import { userActions } from '../../store/userSlice';
 import { getToken, removeToken, setToken } from '../../helper/utilityfn';
+import Loading from '../UI/common/Loading';
 
 function RootLayout() {
   const dispatch = useDispatch<AppDispatch>();
@@ -39,7 +40,7 @@ function RootLayout() {
 
 
   if(loading){
-    return <h1>Loading.....</h1>
+    return <Loading/>
   }
  
   if(!loading){

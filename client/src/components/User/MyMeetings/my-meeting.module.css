@@ -1,0 +1,11 @@
+.no_meet{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 60vh;
+}
+
+.no_meet_content{
+    text-align: center;
+}

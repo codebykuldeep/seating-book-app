@@ -4,10 +4,28 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { Stack } from '@mui/material';
-import { Link, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { removeToken } from '../../helper/utilityfn';
-// import IconButton from '@mui/material/IconButton';
-// import MenuIcon from '@mui/icons-material/Menu';
+import classes from './navbar.module.css';
+
+const LinkArr =[
+  {
+    link:'/seatings',
+    label:'Book your seat'
+  },
+  {
+    link:'/meetings',
+    label:'Meetings'
+  },
+  {
+    link:'/my-meets',
+    label:'My Meetings'
+  },
+  {
+    link:'/history',
+    label:'History'
+  }
+]
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -20,15 +38,15 @@ export default function Navbar() {
       <AppBar position="static">
         <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} p={1}>
           <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} gap={2}>
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            <Link to={'/seatings'}>Seatings</Link>
-          </Typography>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            <Link to={'/meetings'}>Meetings</Link>
-          </Typography>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            <Link to={'/history'}>History</Link>
-          </Typography>
+            
+          {
+            LinkArr.map(({link,label})=>(
+              <Typography key={link} variant="h6" component="div" sx={{ flexGrow: 1,fontSize:'18px' }}>
+                <NavLink className={({isActive})=>isActive ? classes.active : ''} to={link}>{label}</NavLink>
+              </Typography>
+            ))
+          }
+        
           </Stack>
           <Button color="inherit" onClick={handleLogout}>Logout</Button>
         </Stack>

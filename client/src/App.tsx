@@ -1,14 +1,23 @@
 import React from 'react';
 import './App.css';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom';
 import Authpage from './components/UI/Authpage/Authpage';
 import RootLayout from './components/Layout/RootLayout';
 import { authLoader, HomeLoader } from './utils/routerLoaders';
-import Home from './components/User/Home';
 import HomeLayout from './components/Layout/HomeLayout';
 import Seatings from './components/User/Seatings/Seatings';
 import Meetings from './components/User/Meetings/Meetings';
 import History from './components/User/History/History';
+import MyMeetings from './components/User/MyMeetings/MyMeetings';
+import { createTheme, ThemeProvider } from '@mui/material';
+import ErrorPage from './components/UI/common/ErrorPage';
+
+
+const theme = createTheme({
+  typography: {
+    fontFamily: `'Poppins', sans-serif`,
+  },
+});
 
 
 
@@ -16,6 +25,7 @@ const router = createBrowserRouter([
   {
     path:'/',
     element:<RootLayout/>,
+    errorElement:<ErrorPage/>,
     children:[
       {
         path:'',
@@ -24,7 +34,7 @@ const router = createBrowserRouter([
         children:[
           {
             path:'',
-            element:<Home/>
+            element:<Navigate to={'/seatings'}/>
           },
           {
             path:'seatings',
@@ -35,7 +45,12 @@ const router = createBrowserRouter([
             element:<Meetings/>
           },
           {
+            path:'my-meets',
+            element:<MyMeetings/>
+          },
+          {
             path:'history',
+            errorElement:<h1>Error Occurred while showing history</h1>,
             element:<History/>
           }
         ]
@@ -51,7 +66,10 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <RouterProvider  router={router}/>
+    <ThemeProvider theme={theme}>
+       <RouterProvider  router={router}/>
+    </ThemeProvider>
+   
   );
 }
 

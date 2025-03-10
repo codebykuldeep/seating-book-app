@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, ManyToOne } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, ManyToOne, CreateDateColumn } from "typeorm"
 import { Employees } from "./employees"
 
 @Entity({
@@ -40,6 +40,9 @@ export class MeetsLog extends BaseEntity {
         nullable:false,
     })
     end_time: string
+
+    @CreateDateColumn()
+    created_at:string;
 
     @ManyToOne(() => Employees, (employee) => employee.emp_id,{eager:true})
     booked_by: Employees

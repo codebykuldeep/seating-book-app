@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&display=swap');
+
+.container{
+    /* //width: 100%; */
+    width: 800px;
+    max-height: 600px;
+    padding: 2rem 1rem;
+    /* margin: 0 auto; */
+}
+.container * {
+    font-family: "Gloria Hallelujah",'serif','monospace';
+}
+
+.upper_cabin{
+    display: flex;
+    align-items: center;
+}
+
+.hallway{
+    padding: 2rem 1rem;
+}
+
+.lower_cabin{
+    display: flex;
+    align-items: center;
+}
+.back_relative{
+    position: relative;
+}
+
+
+
+
+.seat{
+    width: 40px;
+    height: 40px;
+    /* border: 1px solid black; */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+

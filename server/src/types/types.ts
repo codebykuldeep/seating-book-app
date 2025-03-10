@@ -8,4 +8,11 @@ export interface BookMeetSocket{
     emp_id:string;
     start:string;
     end:string;
+    date:string
+}
+
+export interface GetHistorySocket{
+    emp_id:string;
+    option:string;
+    date:string;
 }

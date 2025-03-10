@@ -7,10 +7,14 @@ import { IUser } from '../types/dataTypes';
 
 export interface UserState {
   user: IUser | null;
+  selectedSeat:string | number | null;
+  bookedSeat:string | number | null;
 }
 
 export const initialState: UserState  = {
-  user:null
+  user:null,
+  selectedSeat:null,
+  bookedSeat:null,
 }
 
 
@@ -26,6 +30,24 @@ export const userSlice = createSlice({
     removeState: (state) => {
       state.user = null;
     },
+    setSelectedSeat:(state,action: PayloadAction<string | number>)=>{
+      state.selectedSeat = action.payload;
+      state.bookedSeat = null;
+    },
+    removeSelectedSeat:(state)=>{
+      state.selectedSeat = null;
+    },
+    setBookedSeat:(state,action: PayloadAction<string | number>)=>{
+      state.bookedSeat = action.payload;
+      state.selectedSeat = null;
+    },
+    removeBookedSeat:(state)=>{
+      state.bookedSeat = null;
+    },
+    removeBothSeat:(state)=>{
+      state.bookedSeat = null;
+      state.selectedSeat = null;
+    }
   },
 })
 

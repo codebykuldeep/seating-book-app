@@ -14,9 +14,6 @@ interface Props{
 }
 
 function ActiveRoom({meetNo,data,roomStatus}:Props) {
-  console.log(data.length);
-  console.log(roomStatus);
-  
   
   const RoomName = Number(meetNo) === 1 ? "Left Room" : "Right Room";
   const [roomState,setRoomState] =useState<MeetRoomState | null>(roomStatus)
