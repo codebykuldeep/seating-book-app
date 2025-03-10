@@ -10,6 +10,9 @@
     align-items: center;
     justify-content: center;
 }
+.cabin:first-child{
+    border-right: none !important;
+}
 .cabin_label{
     position: absolute;
     top: 0;
