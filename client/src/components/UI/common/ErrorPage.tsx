@@ -20,7 +20,12 @@ function ErrorPage() {
         )
     }
   return (
-    <div>ErrorPage -{JSON.stringify(error)}</div>
+    <Box className={classes.not_found}>
+        <Box>
+            <Typography variant='h2' fontWeight={'bold'}>500</Typography>
+            <Typography variant='h6'>Error occurred, Please revert back to Homepage.</Typography>
+        </Box>
+    </Box>
   )
 }
 
