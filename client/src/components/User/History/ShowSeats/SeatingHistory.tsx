@@ -10,7 +10,6 @@ interface Props{
 }
 
 function SeatingHistory({data}:Props) {
-    console.log(data);
     
   return (
     <Box>

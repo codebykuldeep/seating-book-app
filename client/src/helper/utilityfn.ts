@@ -1,6 +1,7 @@
 import { ISeat } from "../types/dataTypes";
 
 export function getToken(){
+    
     if(localStorage.getItem('token'))
          return localStorage.getItem('token') ;
     else

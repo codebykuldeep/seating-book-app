@@ -30,7 +30,6 @@ function Meetings() {
         socket.emit('init-meet',data)
 
         socket.on(`get-meet-${floor}-${meetNo}`,(data)=>{
-            console.log(data);
             
             setMeetsData(data);
         })

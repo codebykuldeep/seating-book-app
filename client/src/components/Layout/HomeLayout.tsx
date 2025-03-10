@@ -1,16 +1,17 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import Navbar from './Navbar'
 import { io } from 'socket.io-client'
 import { CONSTANT } from '../../helper/constants'
 import { Outlet } from 'react-router-dom'
 import useSnack from '../../helper/useSnack'
 import ShowSnackbar from '../UI/common/ShowSnackBar'
-import { getToken } from '../../helper/utilityfn'
+import { getToken } from '../../helper/utilityfn';
 
-export const socket = io(CONSTANT.SERVER,{auth:{token:getToken()}});
+export let socket = io(CONSTANT.SERVER,{auth:{token:getToken()}});
 
 function HomeLayout() {
   const {snackState,snackOpen,snackClose} = useSnack();
+  socket = useMemo(()=>io(CONSTANT.SERVER,{auth:{token:getToken()}}),[])
     useEffect(()=>{
         socket.connect();
 
@@ -22,7 +23,8 @@ function HomeLayout() {
 
 
         socket.on('connect_error',(err)=>{
-          snackOpen(true,'error','Something went wrong')
+          console.log(err);
+          snackOpen(true,'error','Something went wrong (connection failed)')
         })
 
         return ()=>{

@@ -25,7 +25,6 @@ function History() {
         socket.emit('get-history',{option,date,emp_id})
 
         socket.on('on-history',(data)=>{
-            console.log(data);
             setData(data);
             
         })

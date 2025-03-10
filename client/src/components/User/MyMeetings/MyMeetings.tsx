@@ -18,7 +18,7 @@ function MyMeetings() {
         socket.emit('my-meets',{emp_id,date:curr_date});
 
         socket.on('meets-data',(data)=>{
-            console.log('user meet',data);
+            
             setData(data);
         })
     },[emp_id])
