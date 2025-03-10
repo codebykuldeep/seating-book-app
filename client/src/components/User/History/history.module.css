@@ -22,3 +22,11 @@
     margin-top: 1rem;
 }
 
+.active{
+    background-color: gray;
+    color: white;
+    border: none;
+}
+.active button{
+    border: none !important;
+}

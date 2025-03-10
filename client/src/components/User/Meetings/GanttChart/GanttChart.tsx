@@ -2,8 +2,7 @@ import React from "react";
 import { Chart } from "react-google-charts";
 import classes from './gantt-chat.module.css'
 import { IMeet } from "../../../../types/dataTypes";
-import { Box } from "@mui/material";
-import NoDataImg from '../../../../assets/noData.png';
+
 
 interface Props{
     meetData:IMeet[];
@@ -60,18 +59,7 @@ const GanttChart = ({meetData}:Props) => {
           />
         )
       }
-      {
-        meetData.length === 0 && (
-          <Box className={classes.no_data}>
-            <Box className={classes.img}>
-              <img src={NoDataImg} alt="no data" />
-            </Box>
-            <Box className={classes.text}>
-              No meetings 
-            </Box>
-          </Box>
-        )
-      }
+      
     </div>
   );
 };

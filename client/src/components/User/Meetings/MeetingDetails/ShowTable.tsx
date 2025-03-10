@@ -9,6 +9,7 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { ColumnType, IMeet, IUser } from '../../../../types/dataTypes';
 import { getDuration } from '../../../../helper/meetHelperFn';
+import { Typography } from '@mui/material';
 
 
 
@@ -39,20 +40,22 @@ export default function ShowTable<T>({columns=COLUMN,rows,openModal}:DataTablePr
     }
   }
 
+
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
       <TableContainer sx={{ maxHeight: 440,width:'100%', }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
-            <TableRow>
+            <TableRow sx={{ backgroundColor: '#f5f5f5' }}>
               {columns.map((column) => (
                 <TableCell
                   key={column.id}
                   align={column.align}
-                  style={{ minWidth: column.minWidth,fontWeight:'bold' }}
+                  style={{ minWidth: column.minWidth }}
               
                 >
-                  {column.label}
+                  <Typography variant="subtitle1" fontWeight="bold"> {column.label}</Typography>
+                  
                 </TableCell>
               ))}
             </TableRow>
@@ -62,7 +65,13 @@ export default function ShowTable<T>({columns=COLUMN,rows,openModal}:DataTablePr
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row,ind) => {
                 return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={ind} onClick={()=>handleRow(row)}>
+                  <TableRow
+                   hover role="checkbox" tabIndex={-1} key={ind}
+                   sx={{
+                    '&:hover': { backgroundColor: '#fafafa' },
+                    transition: 'background-color 0.2s'
+                  }}
+                  onClick={()=>handleRow(row)}>
                     {columns.map((column) => {
                       const value = row[column.id as keyof T] as string;
                       return (

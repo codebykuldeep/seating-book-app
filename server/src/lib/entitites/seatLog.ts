@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, ManyToOne } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, ManyToOne, CreateDateColumn } from "typeorm"
 import { Employees } from "./employees"
 import { BookStatus } from "./seats"
 
@@ -28,6 +28,10 @@ export class SeatsLog extends BaseEntity {
         name:'book_status'
     })
     book_status: BookStatus
+
+    @CreateDateColumn()
+    created_at:string;
+
 
     @ManyToOne(() => Employees, (employee) => employee.emp_id,{eager:true})
     booked_by: Employees

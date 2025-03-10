@@ -14,10 +14,11 @@ export async function getSeatingsHistory(date:string){
     })
    const seatsLog = await SeatsLog.find({
     where:{
-        date:date
+        date:date,
+        book_status:BookStatus.BOOK,
     }
    }) 
-   console.log(seatsLog);
+   
    
    const seatsSize = seats.length;
 

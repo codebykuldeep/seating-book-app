@@ -4,8 +4,7 @@ import { Employees } from '../lib/entitites/employees';
 import { sendLoginVerification } from '../services/nodemailer';
 import { generateOTP, verifyOTP } from '../services/OTPservices';
 import { generateJWTtoken, verifyJWTtoken } from '../auth/jwt';
-import { BookStatus, Seats } from '../lib/entitites/seats';
-import { db } from '../lib/db';
+import { getNameFromEmail } from '../utils/utils';
 
 
 export async function handleLogin(req:Request,res:Response) {
@@ -17,7 +16,7 @@ export async function handleLogin(req:Request,res:Response) {
         const otp = generateOTP(email);
         console.log('OTP  -----> ',otp);
         
-        //await sendLoginVerification(email,otp);
+        await sendLoginVerification(email,otp);
         
         return res.json({success:true,message:'OTP sent to your email',email})
     } catch (error) {
@@ -34,7 +33,7 @@ export async function handleLogin(req:Request,res:Response) {
 export async function handleLoginVerification(req:Request,res:Response) {
     const {email,code} = req.body;
     try {
-        console.log(req.body);
+        
         const otp_result = verifyOTP(email,code);
         if(!otp_result.status){
             throw new Error(otp_result.message);
@@ -42,19 +41,18 @@ export async function handleLoginVerification(req:Request,res:Response) {
         
         const employee = await Employees.findOne({where:{email}});
         if(!employee){
-            const nameFromMail = email.split('@')[0];
-            const fullName = nameFromMail.split('.').join(' ');
-
+            const fullName = getNameFromEmail(email.toLowerCase());
+            
             const user = new Employees();
             user.email = email;
             user.name = fullName;
             await user.save();
-            console.log(user);
+            
             
             const token = generateJWTtoken(user);
             return res.json({success:true,user:user,message:'OTP verified',token:token})
         }
-        console.log(employee);
+        
         
         const token = generateJWTtoken(employee);
         return res.json({success:true,user:employee,message:'OTP verified',token:token})
@@ -85,10 +83,4 @@ export async function handleUserVerification(req:Request,res:Response) {
         
         return res.json({message:(error as CustomError).message,success:false})
     }
-}
-
-
-export async function resetSeats(req:Request,res:Response) {
-    await db.createQueryBuilder().update(Seats).set({employee:null,book_status:BookStatus.NONE}).execute();
-    return res.send('DONE')
 }

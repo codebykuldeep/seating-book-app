@@ -5,6 +5,7 @@ dotenv.config({path:'./.env'})
 
 export const CONFIG ={
     PORT:process.env.PORT,
+    CLIENT:process.env.CLIENT_URL
 }
 
 export const  MAIL_CONFIG={

@@ -3,10 +3,12 @@ import { AlertType, SnackType } from '../types/errorTypes';
 
 
 function useSnack() {
-   const [snackState,setSnackState]=useState<SnackType>({open:false,status: undefined,message:''})
+   const [snackState,setSnackState]=useState<SnackType>({open:false,status: undefined,message:''});
+
    const snackClose = useCallback(function snackClose(){
-    setSnackState({open:false,status:undefined,message:''});
-    },[])
+    setSnackState(prev=>({...prev,open:false}));
+    },[]);
+    
     const snackOpen =useCallback(function snackOpen(open:boolean,status:AlertType,message:string){
         setSnackState({open,status,message});
     },[])

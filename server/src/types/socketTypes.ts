@@ -24,3 +24,15 @@ export interface InitMeetSocket{
     meet_no:string;
     emp_id:string;
 }
+
+
+export interface GetUserMeetSocket{
+    emp_id:string;
+    date:string;
+}
+
+export interface DeleteMeetSocket{
+    emp_id:string;
+    date:string;
+    meet_id:string;
+}

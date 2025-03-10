@@ -12,7 +12,7 @@ interface Props{
 }
 
 function Seat({seat}:Props) {
-    const user = useSelector((state:RootState)=>state.userSlice.user);
+    const {user,bookedSeat} = useSelector((state:RootState)=>state.userSlice);
     const {date,handleUnBookedSeat,removeSelectedSeat} = useContext(SeatContext);
     const {book_status='',employee={name:"dummy"},seat_no=1} = seat!;
 
@@ -23,6 +23,7 @@ function Seat({seat}:Props) {
             socket.emit('unselect-seat',{date,emp_id})
             return;
         }
+        if(bookedSeat) return;
 
         if(book_status === "BOOKED" || book_status === "SELECTED") return;
         

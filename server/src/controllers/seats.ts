@@ -1,6 +1,7 @@
 import { Employees } from "../lib/entitites/employees";
 import { SeatsLog } from "../lib/entitites/seatLog";
 import { BookStatus, Seats } from "../lib/entitites/seats";
+import { sendSeatBookedMail } from "../services/nodemailer";
 
 
 const curr_date = new Date().toISOString().split('T')[0];
@@ -21,7 +22,7 @@ export async function getSeatData(date:string=curr_date){
             date:date
         }
        }) 
-       console.log(seatsLog);
+       
        
        const seatsSize = seats.length;
     
@@ -82,7 +83,6 @@ export async function unselectSeat(employee:Employees,date:string){
         }
     });
     if(!selectedSeat) return ;
-    console.log('remove');
     
     await selectedSeat?.remove();
 }
@@ -95,7 +95,6 @@ export async function releaseAllselectedSeat(employee:Employees){
         }
     });
     if(selectedSeat.length === 0) return ;
-    console.log('remove all');
     
     await SeatsLog.remove(selectedSeat);
 }
@@ -108,6 +107,16 @@ export async function bookSeat(employee:Employees,date:string) {
     await SeatsLog.update({date,booked_by},{
         book_status:BookStatus.BOOK,
     });
+    SeatsLog.findOne({
+        where:{
+            date:date,
+            booked_by,
+        }
+    }).then(data=>{
+        if(!data) return;
+        sendSeatBookedMail(employee.email,data)
+    })
+    
 }
 
 export async function removeSeat(employee:Employees,date:string) {
@@ -122,6 +131,6 @@ export async function removeSeat(employee:Employees,date:string) {
         }
     });
     if(!bookedSeat) return;
-    
+
     await bookedSeat?.remove();
 }

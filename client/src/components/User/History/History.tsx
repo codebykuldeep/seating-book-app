@@ -8,9 +8,13 @@ import { RootState } from '../../../store/store';
 import { IMeet, ISeat } from '../../../types/dataTypes';
 import MeetingHistory from './ShowMeetings/MeetingHistory';
 import SeatingHistory from './ShowSeats/SeatingHistory';
+import { validateDate } from '../../../utils/validation';
+import ShowSnackbar from '../../UI/common/ShowSnackBar';
+import useSnack from '../../../helper/useSnack';
 
 function History() {
     const {emp_id} = useSelector((state:RootState)=>state.userSlice.user)!;
+    const {snackState,snackClose,snackOpen} = useSnack();
     const [date,setDate] = useState(new Date().toISOString().split('T')[0]);
     const [option,setOption] = useState('seating');
     const [data,setData] = useState<IMeet[] | ISeat[]>([]);
@@ -28,7 +32,13 @@ function History() {
 
 
     function updateDate(value:string){
-        setDate(value);
+        if(validateDate(value,'future')){
+            setDate(value);
+            if(snackState.open) snackClose();
+        }
+        else{
+            snackOpen(true,'warning','Please select a past date')
+        }
     }
     function handleOption(event:React.MouseEvent){
         const targetData = event.target as HTMLButtonElement;
@@ -42,23 +52,27 @@ function History() {
         }
         
     }
-    console.log(option ," ",date);
     
   return (
     <Box className={classes.container}>
         <Stack direction={'row'} className={classes.header}>
             <div className={classes.option} onClick={handleOption}>
-                <div><button value={'seating'}>Seatings</button></div>
-                <div><button value={'meeting'}>Meetings history</button></div>
+                <div className={option === 'seating' ? classes.active : ''}>
+                    <button value={'seating'}>Seatings</button>
+                </div>
+                <div className={option === 'meeting' ? classes.active : ''}>
+                    <button value={'meeting'}>Meetings history</button>
+                </div>
             </div>
             <Box className={classes.date_picker}>
                 <DateSelector date={date} updateDate={updateDate} />
             </Box>
         </Stack>
         <Box className={classes.content}>
-            {option === 'meeting' && data && <MeetingHistory meetingsData={data as IMeet[]}/>}
+            {option === 'meeting' && data && <MeetingHistory meetingsData={data as IMeet[]} date={date}/>}
             {option === 'seating' && data && <SeatingHistory data={data as ISeat[]}/>}
         </Box>
+        <ShowSnackbar state={snackState} closeFn={snackClose}/>
     </Box>
   )
 }

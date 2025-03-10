@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Table,
   TableBody,
@@ -9,13 +9,27 @@ import {
   Paper,
   Typography,
   Box,
+  TablePagination,
 } from '@mui/material';
 import { IMeet } from '../../../../types/dataTypes';
+import NoMeetings from '../../MyMeetings/NoMeetings';
 
 interface Props{
     meetingsData:IMeet[];
+    date:string;
 }
-const MeetingHistory = ({meetingsData}:Props) => {
+const MeetingHistory = ({meetingsData,date}:Props) => {
+  const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
+    
+    const handleChangePage = (event: unknown, newPage: number) => {
+      setPage(newPage);
+    };
+  
+    const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+      setRowsPerPage(+event.target.value);
+      setPage(0);
+    };
 
   const formatTime = (time:string) => {
     return new Date(`2025-03-06 ${time}`).toLocaleTimeString([], {
@@ -23,6 +37,8 @@ const MeetingHistory = ({meetingsData}:Props) => {
       minute: '2-digit'
     });
   };
+  if(meetingsData.length === 0)
+    return <NoMeetings type='HISTORY' date={date}/>
 
   return (
     <Box >
@@ -55,7 +71,7 @@ const MeetingHistory = ({meetingsData}:Props) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {meetingsData.map((meeting) => (
+            {meetingsData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((meeting) => (
               <TableRow
                 key={meeting.meet_id}
                 sx={{
@@ -76,6 +92,15 @@ const MeetingHistory = ({meetingsData}:Props) => {
           </TableBody>
         </Table>
       </TableContainer>
+      <TablePagination
+        rowsPerPageOptions={[10, 25, 100]}
+        component="div"
+        count={meetingsData.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
     </Box>
   );
 };

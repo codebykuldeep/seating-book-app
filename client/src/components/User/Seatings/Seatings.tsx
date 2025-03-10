@@ -14,6 +14,8 @@ import { validateDate } from '../../../utils/validation';
 import { getUserSeatWithStatus } from '../../../helper/utilityfn';
 import RemoveSeat from './RemoveSeatBook/RemoveSeat';
 import { dateFormatter } from '../../../utils/dateUtils';
+import ShowSnackbar from '../../UI/common/ShowSnackBar';
+import useSnack from '../../../helper/useSnack';
 
 const curr_date = new Date().toISOString().split('T')[0];
 
@@ -30,6 +32,10 @@ function Seatings() {
     const timer = useRef<ReturnType<typeof setTimeout> | null>(null)
     const [seats,setSeats] = useState<ISeat[]>();
     const [open, setOpen] = useState(false);
+    const {snackState,snackOpen,snackClose} = useSnack();
+
+
+
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
@@ -37,7 +43,6 @@ function Seatings() {
     const {emp_id} = user!;
 
     useEffect(()=>{
-        console.log('getting data');
         
         socket.emit('init-data',{date});
 
@@ -45,7 +50,6 @@ function Seatings() {
         socket.on(`get-data-${date}`,(data)=>{
             if(data && data.length > 0){
               const [seat,status] = getUserSeatWithStatus(data,emp_id);
-              console.log(getUserSeatWithStatus(data,emp_id));
               
               if(seat !== -1){
                 if(status === "BOOKED"){
@@ -66,7 +70,12 @@ function Seatings() {
 
     function updateDate(value:string){
       if(validateDate(value,'past')){
+        if(snackState.open) snackClose();
+        
         setDate(value);
+      }
+      else{
+        snackOpen(true,'warning','Invalid selection: Please choose today or a future date.')
       }
     }
 
@@ -89,7 +98,7 @@ function Seatings() {
         socket.emit('unselect-seat',{date,emp_id})
       },1000 * 60 * 5 )
     },[emp_id,dispatch,date])
-    console.log(bookedSeat," ",selectedSeat);
+    
     
     return(
       <SeatContext.Provider value={{date,handleUnBookedSeat,removeSelectedSeat}}>
@@ -122,6 +131,7 @@ function Seatings() {
         </div>
      </Box>
      {open && <ConfirmModal open={open} handleClose={handleClose} handleConfirm={handleConfirm}/>}
+     <ShowSnackbar state={snackState} closeFn={snackClose}/>
       </SeatContext.Provider>
     )
 }

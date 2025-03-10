@@ -1,4 +1,4 @@
-import { IMeet, ISeat } from "../types/dataTypes";
+import { ISeat } from "../types/dataTypes";
 
 export function getToken(){
     if(localStorage.getItem('token'))
