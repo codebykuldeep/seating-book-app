@@ -49,7 +49,7 @@ function History() {
             if(value === option) return;
 
             setOption(value);
-            setData([]);
+            setData(undefined);
         }
         
     }
