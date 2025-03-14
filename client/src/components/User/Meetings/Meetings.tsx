@@ -46,13 +46,14 @@ function Meetings() {
         socket.emit('init-meet',data)
     }
 
-    function handleBookMeet(start:string,end:string){
+    function handleBookMeet(start:string,end:string,date:string){
         const data={
             floor_no:1,
             meet_no:meetNo,
             emp_id:user?.emp_id,
             start,
-            end
+            end,
+            date
         }
         socket.emit('book-meet',data)
     }

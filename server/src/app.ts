@@ -14,9 +14,7 @@ import { createServer } from "node:http";
 import { Server } from "socket.io";
 import connectSocketIo from "./socket/connectSocket";
 
-
 dotenv.config();
-
 
 
 export const envMode = process.env.NODE_ENV?.trim() || "DEVELOPMENT";
@@ -60,10 +58,24 @@ export const io = new Server(server,{
 
 
 server.listen(port, () =>{
+  console.log('----------------------------------------\n');
   console.log("Server is working on Port:" + port + " in " + envMode + " Mode.");
   db.initialize().then(()=>{
-    console.log('DB CONNECTED')
+    console.log('DB CONNECTED');
+
+
+    io.use((socket,next)=>{
+      if(socket.handshake.auth.token){
+        next();
+      }
+      else{
+        next(new Error("thou shall not pass"));
+      }     
+    })
     io.on('connection',connectSocketIo)
+
+
+    console.log('\n----------------------------------------');
   })
   .catch((error)=>{
     throw new Error(error);

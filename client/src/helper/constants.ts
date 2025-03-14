@@ -1,3 +1,3 @@
 export const CONSTANT ={
-    SERVER:'http://localhost:8001',
+    SERVER:process.env.REACT_APP_SERVER,
 }

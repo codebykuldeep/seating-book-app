@@ -15,6 +15,9 @@
     display: flex;
     align-items: center;
 }
+.upper_cabin .cabin-box{
+    background-color: red;
+}
 
 .hallway{
     padding: 2rem 1rem;

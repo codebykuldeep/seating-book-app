@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import classes from './activeroom.module.css';
 import { IMeet } from '../../../../types/dataTypes';
 import { MeetRoomState } from '../../../../types/meetingsTypes';
-import RoomTimer from './RoomTimer';
+
 
 
 interface Props{
@@ -13,7 +13,7 @@ interface Props{
 }
 
 function ActiveCard({meetNo,data,roomState}:Props) {
-    const [state,setState] = useState(true);
+    const [state] = useState(true);
   const RoomName = Number(meetNo) === 1 ? "Left Room" : "Right Room";
   console.log(roomState);
   

@@ -11,7 +11,7 @@ interface Props{
 
 function Cabin({label,seatData}:Props) {
   return (
-    <Box className={`${classes.cabin}`}>
+    <Box className={`${classes.cabin} cabin-box`}>
         <Box className={classes.content}>
             <Seat seat={seatData[0]}/>
             <Box className={classes.table}>table</Box>

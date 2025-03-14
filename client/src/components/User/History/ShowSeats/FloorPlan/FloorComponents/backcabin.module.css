@@ -1,0 +1,44 @@
+
+/* BACK CABIN */
+.back_cabin{
+    text-align: right;
+    position: absolute;
+    left: 100%;
+    top: -190px;
+    height: 400px;
+    width: 250px;
+    border: 2px solid black;
+    padding: 0.4rem;
+
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 20px;
+
+}
+
+.seat_pair{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+.back_open{
+    position: absolute;
+    top: 65px;
+    width: 150px;
+    height: 20px;
+    left: -75px;
+    background-color: white;
+    rotate: 90deg;
+}
+
+.label{
+    position: absolute;
+    top: 145px;
+    left: 30%;
+    pointer-events: none;
+    user-select: none;
+}

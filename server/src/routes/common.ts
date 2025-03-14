@@ -1,5 +1,5 @@
 import express from "express";
-import { handleLogin, handleLoginVerification, handleUserVerification, resetSeats } from "../controllers/common";
+import { handleLogin, handleLoginVerification, handleUserVerification } from "../controllers/common";
 
 const router = express.Router();
 
@@ -11,7 +11,6 @@ router.post('/verify-otp',handleLoginVerification)
 
 router.get('/verify',handleUserVerification)
 
-router.get('/reset-seat',resetSeats)
 
 
 export default router;
